@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="nelo_form">
+        <div>
+            <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me=""/>
+        </div>
+    </template>
+</odoo>

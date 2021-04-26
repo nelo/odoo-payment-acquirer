@@ -1,0 +1,122 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* payment_nelo
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-21 20:01+0000\n"
+"PO-Revision-Date: 2021-04-21 20:01+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: payment_nelo
+#: model:ir.model.fields,field_description:payment_nelo.field_payment_acquirer___nelo_redirect_url
+msgid " Nelo Redirect Url"
+msgstr " Url de Redirección de Nelo"
+
+#. module: payment_nelo
+#: model:ir.model.fields,field_description:payment_nelo.field_payment_acquirer__display_name
+#: model:ir.model.fields,field_description:payment_nelo.field_payment_transaction__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: payment_nelo
+#: model:ir.model.fields,field_description:payment_nelo.field_payment_acquirer__id
+#: model:ir.model.fields,field_description:payment_nelo.field_payment_transaction__id
+msgid "ID"
+msgstr "ID"
+
+#. module: payment_nelo
+#: model:ir.model.fields,field_description:payment_nelo.field_payment_acquirer____last_update
+#: model:ir.model.fields,field_description:payment_nelo.field_payment_transaction____last_update
+msgid "Last Modified on"
+msgstr "Última vez modificado en"
+
+#. module: payment_nelo
+#: model:ir.model.fields,field_description:payment_nelo.field_payment_acquirer__nelo_merchant_secret
+msgid "Merchant Secret"
+msgstr "Secreto de Comerciante"
+
+#. module: payment_nelo
+#: model:ir.model.fields.selection,name:payment_nelo.selection__payment_acquirer__provider__nelo
+#: model:payment.acquirer,name:payment_nelo.payment_acquirer_nelo
+msgid "Nelo"
+msgstr "Nelo"
+
+#. module: payment_nelo
+#: code:addons/payment_nelo/models/payment.py:0
+#, python-format
+msgid "Nelo: received data for reference %s; multiple order found."
+msgstr "Nelo: datos recibidos para la referencia %s; se encontraron múltiples órdenes."
+
+#. module: payment_nelo
+#: code:addons/payment_nelo/models/payment.py:0
+#, python-format
+msgid "Nelo: received data for reference %s; no order found."
+msgstr "Nelo: datos recibidos para la referencia %s; no se encontraron órdenes."
+
+#. module: payment_nelo
+#: code:addons/payment_nelo/models/payment.py:0
+#, python-format
+msgid "Nelo: received data with missing reference (%s)"
+msgstr "Nelo: datos recibidos sin referencia (%s)"
+
+#. module: payment_nelo
+#: model:ir.model,name:payment_nelo.model_payment_acquirer
+msgid "Payment Acquirer"
+msgstr "Adquiriente de pago"
+
+#. module: payment_nelo
+#: model:ir.model,name:payment_nelo.model_payment_transaction
+msgid "Payment Transaction"
+msgstr "Transacción de pago"
+
+#. module: payment_nelo
+#: code:addons/payment_nelo/models/payment.py:0
+#, python-format
+msgid "Please contact support."
+msgstr "Contacta a soporte."
+
+#. module: payment_nelo
+#: model:ir.model.fields,field_description:payment_nelo.field_payment_acquirer__provider
+msgid "Provider"
+msgstr "Proveedor"
+
+#. module: payment_nelo
+#: code:addons/payment_nelo/controllers/main.py:0
+#, python-format
+msgid "Request rejected by Nelo."
+msgstr "Petición rechazada por Nelo."
+
+#. module: payment_nelo
+#: model:ir.model.fields,help:payment_nelo.field_payment_acquirer__nelo_merchant_secret
+msgid "The Merchant Secret is used to ensure communications with Nelo."
+msgstr "El Secreto de Comerciante es usado para asegurar las comunicaciones con Nelo."
+
+#. module: payment_nelo
+#: model_terms:payment.acquirer,auth_msg:payment_nelo.payment_acquirer_nelo
+msgid "Your payment has been authorized."
+msgstr "Tu pago ha sido autorizado."
+
+#. module: payment_nelo
+#: model_terms:payment.acquirer,cancel_msg:payment_nelo.payment_acquirer_nelo
+msgid "Your payment has been cancelled."
+msgstr "Tu pago ha sido cancelado."
+
+#. module: payment_nelo
+#: model_terms:payment.acquirer,pending_msg:payment_nelo.payment_acquirer_nelo
+msgid ""
+"Your payment has been successfully processed but is waiting for approval."
+msgstr ""
+"Tu pago ha sido procesado satisfactoriamente pero está esperando aprobación."
+
+#. module: payment_nelo
+#: model_terms:payment.acquirer,done_msg:payment_nelo.payment_acquirer_nelo
+msgid "Your payment has been successfully processed. Thank you!"
+msgstr "Tu pago ha sido procesado satisfactoriamente, ¡Gracias!"
