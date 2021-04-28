@@ -4,6 +4,7 @@
 import json
 import logging
 import pprint
+import urllib.parse
 
 from werkzeug import urls
 import requests
@@ -88,7 +89,22 @@ class PaymentAcquirer(models.Model):
         _logger.info('Nelo - response %s' % response)
         
         self._handle_http_response_errors(response)
-        self._nelo_redirect_url = response.json()['redirectUrl']
+        self._nelo_redirect_url = self._get_full_redirect_url(response.json()['redirectUrl'], values)
+    
+    def _get_full_redirect_url(self, url, values):
+        state = values.get('partner_state') and (values.get('partner_state').code or values.get('partner_state').name) or ''
+        query_params = {
+            'phoneNumber': values['partner_phone'],
+            'street': values['partner_address'],
+            'buildingNumber': '',
+            'interiorNumber': '',
+            'city': values['partner_city'],
+            'delegation': '',
+            'state': state,
+            'colony': '',
+            'postalCode': values['partner_zip']
+        }
+        return '%s&%s' % (url, urllib.parse.urlencode(query_params, quote_via=urllib.parse.quote))
 
     def _handle_http_response_errors(self, http_response):
         if http_response.status_code >= 400:
