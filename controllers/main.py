@@ -26,7 +26,9 @@ class NeloController(http.Controller):
             })
             headers = {
                 'Authorization': 'Bearer %s' % (acquirer.nelo_merchant_secret),
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-device-platform': 'web',
+                'x-app-version-code': '1'
             }
             try:
                 url = '%s/charge/auth' % (acquirer._get_nelo_urls()['rest_url'])
