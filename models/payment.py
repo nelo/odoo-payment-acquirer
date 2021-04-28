@@ -32,12 +32,12 @@ class PaymentAcquirer(models.Model):
         if self.state == 'enabled': #prod
             return {
                 'web_url': self._nelo_redirect_url,
-                'rest_url': 'https://api-v2.nelo.co/v1'
+                'rest_url': 'https://api.nelo.co/v1'
             }
         else:
             return {
                 'web_url': self._nelo_redirect_url,
-                'rest_url': 'https://api-v2-dev.nelo.co/v1'
+                'rest_url': 'https://dev.nelo.co/v1'
             }
 
     def _set_redirect_url(self, values):
@@ -77,10 +77,12 @@ class PaymentAcquirer(models.Model):
         })
         headers = {
             'Authorization': 'Bearer %s' % (self.nelo_merchant_secret),
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-device-platform': 'web',
+            'x-app-version-code': '1'
         }
 
-        url = '%s/checkout' % (self._get_nelo_urls()['rest_url'])
+        url = '%s/checkout/order' % (self._get_nelo_urls()['rest_url'])
         response = requests.request("POST", url, headers=headers, data=payload)
         _logger.info('Nelo - url requested %s' % url)
         _logger.info('Nelo - response %s' % response)
