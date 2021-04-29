@@ -44,7 +44,7 @@ class PaymentAcquirer(models.Model):
     def _set_redirect_url(self, values):
         payload = json.dumps({
         "order": {
-            "id": values['reference'],
+            "reference": values['reference'],
             "totalAmount": {
                 "amount": values['amount']*100.0, # in cents
                 "currencyCode": 'MXN'
