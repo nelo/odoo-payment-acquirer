@@ -17,41 +17,39 @@ class NeloController(http.Controller):
     _cancel_url = '/payment/nelo/cancel'
 
     def _nelo_auth_payment(self, **params):
-        claims = self._get_claims(params['checkoutToken'])
-
-        if claims.get('order_id'):
-            acquirer = request.env['payment.acquirer'].sudo().search([('provider', '=', 'nelo')])
-            payload = json.dumps({
-                'checkoutToken': params['checkoutToken']
-            })
-            headers = {
-                'Authorization': 'Bearer %s' % (acquirer.nelo_merchant_secret),
-                'Content-Type': 'application/json',
-                'x-device-platform': 'web',
-                'x-app-version-code': '1'
-            }
-            try:
-                url = '%s/payments' % (acquirer._get_nelo_urls()['rest_url'])
-                response = requests.request("POST", url, headers=headers, data=payload)
-                _logger.info('Nelo - url requested %s' % url)
-                _logger.info('Nelo - response: %s' % response)
-                response.raise_for_status()
-                url = '%s/payments/%s/capture' % (acquirer._get_nelo_urls()['rest_url'], response.json()['uuid'])
-                response = requests.request("POST", url, headers=headers)
-                _logger.info('Nelo - url requested %s' % url)
-                _logger.info('Nelo - response: %s' % response)
-                response.raise_for_status()
-            except:
-                request.env['payment.transaction'].sudo().search(
-                    [('reference', '=', claims.get('order_id'))]
-                )._set_transaction_error(_('Request rejected by Nelo.'))
-                return False
-            
-            data = {
-                'reference': claims.get('order_id')
-            }
-            return request.env['payment.transaction'].sudo().form_feedback(data, 'nelo')
-        return False
+        acquirer = request.env['payment.acquirer'].sudo().search([('provider', '=', 'nelo')])
+        payload = json.dumps({
+            'checkoutToken': params['checkoutToken']
+        })
+        headers = {
+            'Authorization': 'Bearer %s' % (acquirer.nelo_merchant_secret),
+            'Content-Type': 'application/json',
+            'x-device-platform': 'web',
+            'x-app-version-code': '1'
+        }
+        try:
+            url = '%s/payments' % (acquirer._get_nelo_urls()['rest_url'])
+            authResponse = requests.request("POST", url, headers=headers, data=payload)
+            _logger.info('Nelo - url requested %s' % url)
+            _logger.info('Nelo - response: %s' % authResponse)
+            authResponse.raise_for_status()
+            authJsonResponse = authResponse.json()
+            url = '%s/payments/%s/capture' % (acquirer._get_nelo_urls()['rest_url'], authJsonResponse['uuid'])
+            captureResponse = requests.request("POST", url, headers=headers)
+            _logger.info('Nelo - url requested %s' % url)
+            _logger.info('Nelo - response: %s' % captureResponse)
+            captureResponse.raise_for_status()
+        except:
+            claims = self._get_claims(params['checkoutToken'])
+            request.env['payment.transaction'].sudo().search(
+                [('reference', '=', claims.get('reference'))]
+            )._set_transaction_error(_('Request rejected by Nelo.'))
+            return False
+        
+        data = {
+            'reference': authJsonResponse['reference']
+        }
+        return request.env['payment.transaction'].sudo().form_feedback(data, 'nelo')
     
     def _get_claims(self, checkoutToken):
         try:
