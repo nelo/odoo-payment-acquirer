@@ -64,7 +64,7 @@ class NeloController(http.Controller):
             return json.loads('{}')
         
 
-    @http.route('/payment/nelo/confirm', type='http', auth="public", methods=['GET',], csrf=False)
+    @http.route('/payment/nelo/confirm', type='http', auth="public", methods=['GET'], csrf=False)
     def nelo_return(self, **query_params):
         if query_params and query_params['checkoutToken']:
             self._nelo_auth_payment(**query_params)
