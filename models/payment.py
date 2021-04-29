@@ -83,7 +83,7 @@ class PaymentAcquirer(models.Model):
             'x-app-version-code': '1'
         }
 
-        url = '%s/checkout/order' % (self._get_nelo_urls()['rest_url'])
+        url = '%s/checkout' % (self._get_nelo_urls()['rest_url'])
         response = requests.request("POST", url, headers=headers, data=payload)
         _logger.info('Nelo - url requested %s' % url)
         _logger.info('Nelo - response %s' % response)
