@@ -41,9 +41,10 @@ class NeloController(http.Controller):
             captureResponse.raise_for_status()
         except:
             claims = self._get_claims(params['checkoutToken'])
-            request.env['payment.transaction'].sudo().search(
-                [('reference', '=', claims.get('reference'))]
-            )._set_transaction_error(_('Request rejected by Nelo.'))
+            if claims.get('reference'):
+                request.env['payment.transaction'].sudo().search(
+                    [('reference', '=', claims.get('reference'))]
+                )._set_transaction_error(_('Request rejected by Nelo.'))
             return False
         
         data = {
