@@ -31,12 +31,12 @@ class NeloController(http.Controller):
                 'x-app-version-code': '1'
             }
             try:
-                url = '%s/payments/auth' % (acquirer._get_nelo_urls()['rest_url'])
+                url = '%s/payments' % (acquirer._get_nelo_urls()['rest_url'])
                 response = requests.request("POST", url, headers=headers, data=payload)
                 _logger.info('Nelo - url requested %s' % url)
                 _logger.info('Nelo - response: %s' % response)
                 response.raise_for_status()
-                url = '%s/payments/%s/capture' % (acquirer._get_nelo_urls()['rest_url'], claims.get('sub'))
+                url = '%s/payments/%s/capture' % (acquirer._get_nelo_urls()['rest_url'], response.json()['uuid'])
                 response = requests.request("POST", url, headers=headers)
                 _logger.info('Nelo - url requested %s' % url)
                 _logger.info('Nelo - response: %s' % response)
