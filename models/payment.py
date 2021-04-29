@@ -4,6 +4,7 @@
 import json
 import logging
 import pprint
+import urllib.parse
 
 from werkzeug import urls
 import requests
@@ -32,18 +33,18 @@ class PaymentAcquirer(models.Model):
         if self.state == 'enabled': #prod
             return {
                 'web_url': self._nelo_redirect_url,
-                'rest_url': 'https://api-v2.nelo.co/v1'
+                'rest_url': 'https://api.nelo.co/v1'
             }
         else:
             return {
                 'web_url': self._nelo_redirect_url,
-                'rest_url': 'https://api-v2-dev.nelo.co/v1'
+                'rest_url': 'https://dev.nelo.co/v1'
             }
 
     def _set_redirect_url(self, values):
         payload = json.dumps({
         "order": {
-            "id": values['reference'],
+            "reference": values['reference'],
             "totalAmount": {
                 "amount": values['amount']*100.0, # in cents
                 "currencyCode": 'MXN'
@@ -77,7 +78,9 @@ class PaymentAcquirer(models.Model):
         })
         headers = {
             'Authorization': 'Bearer %s' % (self.nelo_merchant_secret),
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-device-platform': 'web',
+            'x-app-version-code': '1'
         }
 
         url = '%s/checkout' % (self._get_nelo_urls()['rest_url'])
@@ -86,7 +89,22 @@ class PaymentAcquirer(models.Model):
         _logger.info('Nelo - response %s' % response)
         
         self._handle_http_response_errors(response)
-        self._nelo_redirect_url = response.json()['redirectUrl']
+        self._nelo_redirect_url = self._get_full_redirect_url(response.json()['redirectUrl'], values)
+    
+    def _get_full_redirect_url(self, url, values):
+        state = values.get('partner_state') and (values.get('partner_state').code or values.get('partner_state').name) or ''
+        query_params = {
+            'phoneNumber': values['partner_phone'],
+            'street': values['partner_address'],
+            'buildingNumber': '',
+            'interiorNumber': '',
+            'city': values['partner_city'],
+            'delegation': '',
+            'state': state,
+            'colony': '',
+            'postalCode': values['partner_zip']
+        }
+        return '%s&%s' % (url, urllib.parse.urlencode(query_params, quote_via=urllib.parse.quote))
 
     def _handle_http_response_errors(self, http_response):
         if http_response.status_code >= 400:
