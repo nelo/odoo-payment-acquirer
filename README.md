@@ -6,7 +6,7 @@ An implementation of the [Odoo Payment Acquirer](https://www.odoo.com/documentat
 
 To install the Nelo add on, run the following command from the Odoo root directory:
 
-`git submodule add https://github.com/nelomobile/odoo-payment-acquirer addons/payment_nelo`
+`git submodule add https://github.com/nelo/odoo-payment-acquirer addons/payment_nelo`
 
 This will install the Nelo payment acquirer code as a submodule in your Odoo project. You can commit the directory and the `.gitmodules` file to your codebase. Git will recognize the directory as a submodule and will not track its contents in your git history. Instead, to update the submodule at any time, simply run `git submodule update --remote` from you root directory.
 
