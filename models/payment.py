@@ -39,7 +39,7 @@ class PaymentAcquirer(models.Model):
         else:
             return {
                 'web_url': self._nelo_redirect_url,
-                'rest_url': 'https://dev.nelo.co/v1'
+                'rest_url': 'https://sandbox.nelo.co/v1'
             }
 
     def _set_redirect_url(self, values):
