@@ -16,12 +16,13 @@ from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
+
 class PaymentAcquirer(models.Model):
     _inherit = 'payment.acquirer'
 
     provider = fields.Selection(selection_add=[
         ('nelo', 'Nelo')
-    ], ondelete={'nelo': 'set default'})
+    ])
     _nelo_redirect_url = fields.Char('', invisible = True)
 
     nelo_merchant_secret = fields.Char(
@@ -30,7 +31,7 @@ class PaymentAcquirer(models.Model):
 
     @api.model
     def _get_nelo_urls(self):
-        if self.state == 'enabled': #prod
+        if self.environment == 'prod':
             return {
                 'web_url': self._nelo_redirect_url,
                 'rest_url': 'https://api.nelo.co/v1'

@@ -12,6 +12,7 @@ from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
+
 class NeloController(http.Controller):
     _confirm_url = '/payment/nelo/confirm'
     _cancel_url = '/payment/nelo/cancel'
@@ -59,9 +60,8 @@ class NeloController(http.Controller):
             claims_bytes = base64.b64decode(claims_base64, validate=False)
             return json.loads(claims_bytes.decode('ascii'))
         except:
-            _logger.info('Nelo - error %s' % err)
+            _logger.info('Nelo - error decoding claims from checkoutToken')
             return json.loads('{}')
-        
 
     @http.route('/payment/nelo/confirm', type='http', auth="public", methods=['GET'], csrf=False)
     def nelo_return(self, **query_params):
