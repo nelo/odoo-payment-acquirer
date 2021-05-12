@@ -6,5 +6,6 @@
         <field name="provider">nelo</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="view_template_id" ref="nelo_form"/>
+        <field name="nelo_merchant_secret">****</field>
     </record>
 </odoo>
