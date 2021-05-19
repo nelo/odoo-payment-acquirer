@@ -70,5 +70,5 @@ class NeloController(http.Controller):
         return werkzeug.utils.redirect('/payment/process')
 
     @http.route('/payment/nelo/cancel', type='http', auth='public', methods=['GET'], csrf=False)
-    def nelo_notify(self, **post):
-        return werkzeug.utils.redirect('/payment/process')
+    def nelo_notify(self, **query_params):
+        return werkzeug.utils.redirect('/shop/checkout')
